@@ -1,0 +1,13 @@
+
+[ClassVersion("1.0.0.0"), FriendlyName("cOfficeLicense")]
+class cOfficeLicense : OMI_BaseResource
+{
+    [Write, ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Key] String ProductKey;
+    [Write] Boolean Activate;
+    [Write] Boolean Force;
+    [Required, ValueMap{"Office2013","Office2016"}, Values{"Office2013","Office2016"}] String OfficeVersion;
+    [Read] String PartialProductKey;
+    [Read] String LicenseStatus;
+    [Read] String Product;
+};

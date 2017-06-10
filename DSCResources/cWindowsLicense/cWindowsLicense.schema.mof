@@ -1,0 +1,12 @@
+
+[ClassVersion("1.0.0.0"), FriendlyName("cWindowsLicense")]
+class cWindowsLicense : OMI_BaseResource
+{
+    [Write, ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Key] String ProductKey;
+    [Write] Boolean Activate;
+    [Write] Boolean Force;
+    [Read] String PartialProductKey;
+    [Read] String LicenseStatus;
+    [Read] String OS;
+};
