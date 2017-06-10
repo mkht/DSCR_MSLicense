@@ -27,7 +27,7 @@ CompanyName = ''
 Copyright = '(c) 2017 mkht. All rights reserved.'
 
 # このモジュールの機能の説明
-# Description = ''
+Description = 'PowerShell DSC Resource to set Windows / Office product key.'
 
 # このモジュールに必要な Windows PowerShell エンジンの最小バージョン
 PowerShellVersion = '5.0'
