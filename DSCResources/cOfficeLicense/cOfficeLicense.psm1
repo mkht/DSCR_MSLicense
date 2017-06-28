@@ -326,16 +326,12 @@ function Get-OSVersion {
     [CmdletBinding()]
     Param()
     # https://msdn.microsoft.com/ja-jp/library/windows/desktop/ms724832(v=vs.85).aspx
-    $ErrorActionPreference = 'SilentlyContinue'
-    $OperatingSystem = Get-WmiObject Win32_OperatingSystem -ErrorAction SilentlyContinue
-    ForEach ($OS in $OperatingSystem) {
-        $Ver = $OS.Version -split '\.'
-        switch (('{0}.{1}' -f $Ver[0], $Ver[1])) {
-            '10.0' { return [OSVersion]::Win10 }
-            '6.3' { return [OSVersion]::Win81 }
-            '6.2' { return [OSVersion]::Win8  }
-            '6.1' { return [OSVersion]::Win7  }
-        }
+    $Ver = ([System.Environment]::OSVersion).Version
+    switch (('{0}.{1}' -f $Ver.Major, $Ver.Minor)) {
+        '10.0' { return [OSVersion]::Win10 }
+        '6.3' { return [OSVersion]::Win81 }
+        '6.2' { return [OSVersion]::Win8  }
+        '6.1' { return [OSVersion]::Win7  }
     }
     return [OSVersion]::Unknwon
 }
