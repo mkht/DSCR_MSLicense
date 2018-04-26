@@ -9,15 +9,14 @@
 # ////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////
 #https://technet.microsoft.com/en-US/library/dn502536(v=ws.11).aspx
-Enum WinLicenseStatus
-{
-    Unlicensed       = 0
-    Licensed         = 1
-    OOBGrace         = 2
-    OOTGrace         = 3
-    NonGenuineGrace  = 4
-    Notification     = 5
-    ExtendedGrace    = 6
+Enum WinLicenseStatus {
+    Unlicensed = 0
+    Licensed = 1
+    OOBGrace = 2
+    OOTGrace = 3
+    NonGenuineGrace = 4
+    Notification = 5
+    ExtendedGrace = 6
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////
@@ -135,31 +134,31 @@ function Set-TargetResource {
     if ($Ensure -eq 'Absent') {
         # Remove Product Key
         $ExitCode = (Start-Command -FilePath $Cscript -ArgumentList ($Slmgr, '-upk')).ExitCode
-        if ($ExitCode -ne 0) {Write-Error ('Error happend when removing the product key')}
+        if ($ExitCode -ne 0) {Write-Error ('Error happened when removing the product key')}
         else {Write-Verbose ('Remove the product key succeeded')}
 
         # Remove Product Key from registry
         $ExitCode = (Start-Command -FilePath $Cscript -ArgumentList ($Slmgr, '-cpky')).ExitCode
-        if ($ExitCode -ne 0) {Write-Error ('Error happend when removing the product key from registry')}
+        if ($ExitCode -ne 0) {Write-Error ('Error happened when removing the product key from registry')}
         else {Write-Verbose ('Remove the product key from registry succeeded')}
     }
     else {
-        $isKeyChenged = $false
+        $isKeyChanged = $false
 
         $local:tmpPPKey = $ProductKey.Substring($ProductKey.Length - 5, 5)  # Last 5 chars
         if (($cState.Ensure -eq 'Absent') -or ($cState.PartialProductKey -ne $tmpPPKey) -or $Force) {
             # Install Product Key
             $ExitCode = (Start-Command -FilePath $Cscript -ArgumentList ($Slmgr, '-ipk', $ProductKey)).ExitCode
-            if ($ExitCode -ne 0) {Write-Error ('Error happend when installing the product key')}
+            if ($ExitCode -ne 0) {Write-Error ('Error happened when installing the product key')}
             else {Write-Verbose ('Install the product key succeeded')}
-            $isKeyChenged = $true
+            $isKeyChanged = $true
         }
 
         if ($Activate) {
-            if ($isKeyChenged -or (!$cState.Activate)) {
+            if ($isKeyChanged -or (!$cState.Activate)) {
                 #Activation
                 $ExitCode = (Start-Command -FilePath $Cscript -ArgumentList ($Slmgr, '-ato')).ExitCode
-                if ($ExitCode -ne 0) {Write-Error ('Error happend when try to activation')}
+                if ($ExitCode -ne 0) {Write-Error ('Error happened when try to activation')}
                 else {Write-Verbose ('Activation succeeded')}
             }
         }

@@ -9,32 +9,29 @@
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////
-Enum OfficeLicenseStatus
-{
-    Unlicensed       = 0
-    Licensed         = 1
-    OOBGrace         = 2
-    OOTGrace         = 3
-    NonGenuineGrace  = 4
-    Notification     = 5
-    ExtendedGrace    = 6
+Enum OfficeLicenseStatus {
+    Unlicensed = 0
+    Licensed = 1
+    OOBGrace = 2
+    OOTGrace = 3
+    NonGenuineGrace = 4
+    Notification = 5
+    ExtendedGrace = 6
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////
-Enum OSVersion
-{
-    Win7    = 7     # Win7 or Server2008R2
-    Win8    = 8     # Win8 or Server2012
-    Win81   = 81    # Win8.1 or Server2012R2
-    Win10   = 10    # Win10 or Server2016
-    Unknwon = 0     # Unknwon or ~Vista
+Enum OSVersion {
+    Win7 = 7     # Win7 or Server2008R2
+    Win8 = 8     # Win8 or Server2012
+    Win81 = 81    # Win8.1 or Server2012R2
+    Win10 = 10    # Win10 or Server2016
+    Unknown = 0     # Unknown or ~Vista
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////
-Enum OfficeVersion
-{
+Enum OfficeVersion {
     Office2010 = 14
     Office2013 = 15
     Office2016 = 16
@@ -169,7 +166,7 @@ function Set-TargetResource {
     if ($Ensure -eq 'Absent') {
         # Remove Product Key
         if ($cState.PartialProductKey.length -ne 5) {
-            Write-Error 'Error happend when removing the product key (PartialProductKey not found)'
+            Write-Error 'Error happened when removing the product key (PartialProductKey not found)'
         }
         else {
             $Exec = (Start-Command -FilePath $Cscript -ArgumentList ($Ospp, ('/unpkey:{0}' -f $cState.PartialProductKey)))
@@ -179,7 +176,7 @@ function Set-TargetResource {
         }
     }
     else {
-        $isKeyChenged = $false
+        $isKeyChanged = $false
 
         $local:tmpPPKey = $ProductKey.Substring($ProductKey.Length - 5, 5)  # Last 5 chars
         if (($cState.Ensure -eq 'Absent') -or ($cState.PartialProductKey -ne $tmpPPKey) -or $Force) {
@@ -188,11 +185,11 @@ function Set-TargetResource {
             $Err = Assert-Error $Exec.StdOut
             if ($Err.ErrorCode) {Write-Error ('Error: {0} ({1})' -f $Err.ErrorMsg, $Err.ErrorCode)}
             else {Write-Verbose ('Install the product key succeeded')}
-            $isKeyChenged = $true
+            $isKeyChanged = $true
         }
 
         if ($Activate) {
-            if ($isKeyChenged -or (!$cState.Activate)) {
+            if ($isKeyChanged -or (!$cState.Activate)) {
                 #Activation
                 $Exec = (Start-Command -FilePath $Cscript -ArgumentList ($Ospp, '/act'))
                 $Err = Assert-Error $Exec.StdOut
@@ -333,7 +330,7 @@ function Get-OSVersion {
         '6.2' { return [OSVersion]::Win8  }
         '6.1' { return [OSVersion]::Win7  }
     }
-    return [OSVersion]::Unknwon
+    return [OSVersion]::Unknown
 }
 
 # ////////////////////////////////////////////////////////////////////////////////////////
